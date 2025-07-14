@@ -11,10 +11,6 @@ on:
         description: 'The version of dotnet to use X.X.X'
         required: true
         type: string
-      configuration:
-        description: 'The build configuration (e.g., Debug, Release)'
-        required: true
-        type: string
       test-project-path:
         description: 'The path to the test project'
         required: true
@@ -33,14 +29,14 @@ jobs:
           dotnet-version: ${{ inputs.dotnet-version }}
 
       - name: Clean
-        run: dotnet clean ${{ inputs.test-project-path }} -c ${{ inputs.configuration }}
+        run: dotnet clean ${{ inputs.test-project-path }} --configuration Release
 
       - name: Restore Dependencies
         run: dotnet restore ${{ inputs.test-project-path }}
 
       - name: Build
-        run: dotnet build ${{ inputs.test-project-path }} -c ${{ inputs.configuration }} --no-restore
+        run: dotnet build ${{ inputs.test-project-path }} --configuration Release --no-restore
 
       - name: Run Unit Tests
         # This is using dotnet run instead of test (Microsoft Testing Platform)
-        run: dotnet run --project ${{ inputs.test-project-path }} --configuration ${{ inputs.configuration }}
+        run: dotnet run --project ${{ inputs.test-project-path }} --configuration Release
