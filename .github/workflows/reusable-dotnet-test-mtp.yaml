@@ -1,0 +1,46 @@
+name: Reusable Dotnet Test MTP
+
+on:
+  workflow_call:
+    inputs:
+      platform:
+        description: 'The platform to run the tests on (e.g., ubuntu-latest, windows-latest)'
+        required: true
+        type: string
+      dotnet-version:
+        description: 'The version of dotnet to use X.X.X'
+        required: true
+        type: string
+      configuration:
+        description: 'The build configuration (e.g., Debug, Release)'
+        required: true
+        type: string
+      test-project-path:
+        description: 'The path to the test project'
+        required: true
+        type: string
+
+jobs:
+  run-tests:
+    runs-on: ${{ inputs.platform }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ inputs.dotnet-version }}
+
+      - name: Clean
+        run: dotnet clean ${{ inputs.test-project-path }} -c ${{ inputs.configuration }}
+
+      - name: Restore Dependencies
+        run: dotnet restore ${{ inputs.test-project-path }}
+
+      - name: Build
+        run: dotnet build ${{ inputs.test-project-path }} -c ${{ inputs.configuration }} --no-restore
+
+      - name: Run Unit Tests
+        # This is using dotnet run instead of test (Microsoft Testing Platform)
+        run: dotnet run ${{ inputs.test-project-path }} -c ${{ inputs.configuration }}
