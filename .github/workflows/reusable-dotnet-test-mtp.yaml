@@ -43,4 +43,4 @@ jobs:
 
       - name: Run Unit Tests
         # This is using dotnet run instead of test (Microsoft Testing Platform)
-        run: dotnet run ${{ inputs.test-project-path }} -c ${{ inputs.configuration }}
+        run: dotnet run --project ${{ inputs.test-project-path }} --configuration ${{ inputs.configuration }}
