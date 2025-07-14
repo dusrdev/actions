@@ -4,37 +4,20 @@ This repository hosts reusable GitHub workflows to simplify running .NET clean, 
 
 ## Available Workflows
 
-- **reusable-dotnet-test.yaml**: Base workflow that executes `dotnet clean`, `dotnet restore`, `dotnet build`, and `dotnet test` for a given test project on a single platform and configuration.
-- **reusable-dotnet-test-ubuntu.yaml**: Workflow that calls `reusable-dotnet-test.yaml` with `ubuntu-latest` and `Release` configuration.
-- **reusable-dotnet-test-matrix.yaml**: Workflow that calls `reusable-dotnet-test.yaml` across a matrix of platforms (`ubuntu-latest`, `windows-latest`, `macos-latest`) and configurations (`Debug`, `Release`).
+- **reusable-dotnet-test.yaml**: Base workflow that executes `dotnet clean`, `dotnet restore`, `dotnet build`, and `dotnet test` for a given test project on a single platform.
+- **reusable-dotnet-test-mtp.yaml**: same thing just used `dotnet run` to work with MTP (Microsoft Testing Platform)
 
 ## Workflow Details
 
-### reusable-dotnet-test.yaml
+### reusable-dotnet-test.yaml & reusable-dotnet-test-mtp.yaml
 
 #### Inputs
 
 | Name               | Description                                                         | Required | Type   |
 |--------------------|---------------------------------------------------------------------|----------|--------|
 | `platform`         | The platform to run the tests on (e.g., `ubuntu-latest`)            | true     | string |
-| `configuration`    | The build configuration (e.g., `Debug`, `Release`)                  | true     | string |
+| `dotnet-version`   | The version of dotnet to use (e.g., `9.0.x`)                        | true     | string |
 | `test-project-path`| The path to the test project                                        | true     | string |
-
-### reusable-dotnet-test-ubuntu.yaml
-
-#### Inputs
-
-| Name               | Description                           | Required | Type   |
-|--------------------|---------------------------------------|----------|--------|
-| `test-project-path`| The path to the test project          | true     | string |
-
-### reusable-dotnet-test-matrix.yaml
-
-#### Inputs
-
-| Name               | Description                           | Required | Type   |
-|--------------------|---------------------------------------|----------|--------|
-| `test-project-path`| The path to the test project          | true     | string |
 
 ## Usage
 
@@ -46,23 +29,7 @@ jobs:
     uses: dusrdev/actions/.github/workflows/reusable-dotnet-test.yaml@main
     with:
       platform: ubuntu-latest
-      configuration: Release
-      test-project-path: path/to/YourProject.Tests.csproj
-```
-
-```yaml
-jobs:
-  test:
-    uses: dusrdev/actions/.github/workflows/reusable-dotnet-test-ubuntu.yaml@main
-    with:
-      test-project-path: path/to/YourProject.Tests.csproj
-```
-
-```yaml
-jobs:
-  test:
-    uses: dusrdev/actions/.github/workflows/reusable-dotnet-test-matrix.yaml@main
-    with:
+      dotnet-version: 9.0.x
       test-project-path: path/to/YourProject.Tests.csproj
 ```
 
