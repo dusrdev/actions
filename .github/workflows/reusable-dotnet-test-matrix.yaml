@@ -21,7 +21,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Call reusable-dotnet-test
-        uses: dusrdev/actions/.github/workflows/reusable-dotnet-test.yaml
+        uses: ./.github/workflows/reusable-dotnet-test.yaml
         with:
           platform: ${{ matrix.platform }}
           dotnet-version: ${{ inputs.dotnet-version }}
