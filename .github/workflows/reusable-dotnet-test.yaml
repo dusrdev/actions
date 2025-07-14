@@ -7,6 +7,10 @@ on:
         description: 'The platform to run the tests on (e.g., ubuntu-latest, windows-latest)'
         required: true
         type: string
+      dotnet-version:
+        description: 'The version of dotnet to use X.X.X'
+        required: true
+        type: string
       configuration:
         description: 'The build configuration (e.g., Debug, Release)'
         required: true
@@ -26,7 +30,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: latest
+          dotnet-version: ${{ inputs.dotnet-version }}
 
       - name: Clean
         run: dotnet clean ${{ inputs.test-project-path }} -c ${{ inputs.configuration }}
