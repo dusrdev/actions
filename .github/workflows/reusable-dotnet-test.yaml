@@ -1,4 +1,4 @@
-name: Reusable Unit Tests
+name: Reusable Dotnet Test
 
 on:
   workflow_call:

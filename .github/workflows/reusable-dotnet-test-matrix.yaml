@@ -1,0 +1,24 @@
+name: Reusable Dotnet Test Matrix
+
+on:
+  workflow_call:
+    inputs:
+      test-project-path:
+        description: 'The path to the test project'
+        required: true
+        type: string
+
+jobs:
+  matrix-test:
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, windows-latest, macos-latest]
+        configuration: [Debug, Release]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Call reusable-dotnet-test
+        uses: dusrdev/actions/.github/workflows/reusable-dotnet-test.yaml
+        with:
+          platform: ${{ matrix.platform }}
+          configuration: ${{ matrix.configuration }}
+          test-project-path: ${{ inputs.test-project-path }}
