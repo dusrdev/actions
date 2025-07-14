@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Call reusable-dotnet-test
-        uses: dusrdev/actions/.github/workflows/reusable-dotnet-test.yaml
+        uses: dusrdev/actions/blob/main/.github/workflows/reusable-dotnet-test.yaml@
         with:
           platform: ubuntu-latest
           configuration: Release
