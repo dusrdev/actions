@@ -1,4 +1,4 @@
-name: Reusable Dotnet Test Matrix
+name: Reusable Dotnet Test Matrix MTP
 
 on:
   workflow_call:
@@ -21,7 +21,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Run Tests (${{ matrix.platform }} / ${{ matrix.configuration }})
-        uses: dusrdev/actions/.github/workflows/reusable-dotnet-test.yaml@main
+        uses: dusrdev/actions/.github/workflows/reusable-dotnet-test-mtp.yaml@main
         with:
           platform: ${{ matrix.platform }}
           dotnet-version: ${{ inputs.dotnet-version }}
