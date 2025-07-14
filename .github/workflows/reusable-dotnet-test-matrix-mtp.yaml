@@ -13,17 +13,30 @@ on:
         type: string
 
 jobs:
-  matrix-test:
+  test:
     strategy:
       matrix:
         platform: [ubuntu-latest, windows-latest, macos-latest]
         configuration: [Debug, Release]
     runs-on: ${{ matrix.platform }}
     steps:
-      - name: Run Tests (${{ matrix.platform }} / ${{ matrix.configuration }})
-        uses: dusrdev/actions/.github/workflows/reusable-dotnet-test-mtp.yaml@main
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
-          platform: ${{ matrix.platform }}
           dotnet-version: ${{ inputs.dotnet-version }}
-          configuration: ${{ matrix.configuration }}
-          test-project-path: ${{ inputs.test-project-path }}
+
+      - name: Clean
+        run: dotnet clean ${{ inputs.test-project-path }} -c ${{ matrix.configuration }}
+
+      - name: Restore Dependencies
+        run: dotnet restore ${{ inputs.test-project-path }}
+
+      - name: Build
+        run: dotnet build ${{ inputs.test-project-path }} -c ${{ matrix.configuration }} --no-restore
+
+      - name: Run Unit Tests
+        # This is using dotnet run instead of test (Microsoft Testing Platform)
+        run: dotnet run --project ${{ inputs.test-project-path }} --configuration ${{ matrix.configuration }}
