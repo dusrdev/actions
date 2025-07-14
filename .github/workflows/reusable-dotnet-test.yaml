@@ -21,7 +21,7 @@ on:
         type: string
 
 jobs:
-  test:
+  run-tests:
     runs-on: ${{ inputs.platform }}
     steps:
       - name: Checkout Repository
