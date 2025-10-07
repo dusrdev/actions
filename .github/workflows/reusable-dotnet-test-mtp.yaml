@@ -15,10 +15,17 @@ on:
         description: 'The path to the test project'
         required: true
         type: string
+      use-debug:
+        description: 'Run the pipeline with Debug configuration instead of Release'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   run-tests:
     runs-on: ${{ inputs.platform }}
+    env:
+      DOTNET_CONFIGURATION: ${{ inputs.use-debug && 'Debug' || 'Release' }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -29,14 +36,14 @@ jobs:
           dotnet-version: ${{ inputs.dotnet-version }}
 
       - name: Clean
-        run: dotnet clean ${{ inputs.test-project-path }} --configuration Release
+        run: dotnet clean ${{ inputs.test-project-path }} --configuration ${{ env.DOTNET_CONFIGURATION }}
 
       - name: Restore Dependencies
         run: dotnet restore ${{ inputs.test-project-path }}
 
       - name: Build
-        run: dotnet build ${{ inputs.test-project-path }} --configuration Release --no-restore
+        run: dotnet build ${{ inputs.test-project-path }} --configuration ${{ env.DOTNET_CONFIGURATION }} --no-restore
 
       - name: Run Unit Tests
         # This is using dotnet run instead of test (Microsoft Testing Platform)
-        run: dotnet run --project ${{ inputs.test-project-path }} --configuration Release
+        run: dotnet run --project ${{ inputs.test-project-path }} --configuration ${{ env.DOTNET_CONFIGURATION }}
