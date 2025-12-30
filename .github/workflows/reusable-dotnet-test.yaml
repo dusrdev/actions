@@ -36,13 +36,13 @@ jobs:
           dotnet-version: ${{ inputs.dotnet-version }}
 
       - name: Clean
-        run: dotnet clean ${{ inputs.test-project-path }} --configuration $${{ env.DOTNET_CONFIGURATION }}
+        run: dotnet clean ${{ inputs.test-project-path }} --configuration ${{ env.DOTNET_CONFIGURATION }}
 
       - name: Restore Dependencies
         run: dotnet restore ${{ inputs.test-project-path }}
 
       - name: Build
-        run: dotnet build ${{ inputs.test-project-path }} --configuration $${{ env.DOTNET_CONFIGURATION }} --no-restore
+        run: dotnet build ${{ inputs.test-project-path }} --configuration ${{ env.DOTNET_CONFIGURATION }} --no-restore
 
       - name: Run Unit Tests
-        run: dotnet test ${{ inputs.test-project-path }} --configuration $${{ env.DOTNET_CONFIGURATION }}
+        run: dotnet test ${{ inputs.test-project-path }} --configuration ${{ env.DOTNET_CONFIGURATION }}
